@@ -54,36 +54,42 @@ public class GestionVisite {
 		Visite visite = new Visite();
 		visite.setVille("Toulouse");
 		trouverVisite(visite);
+		annulerVisite(103);
 	}
 	
-	/*public String annulerVisite(int codeReservation) {
+	public static String annulerVisite(int codeReservation) {
 		
-		int codeReservationVisite = 0;
+		int idClient = 0;
 		String message = "";
 		
 		try {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 			Connection db = DriverManager.getConnection("jdbc:mysql://localhost/GestionVisite?user=admin&password=network");
 			Statement stmt = db.createStatement();
-			stmt.executeQuery("Select idReservation from Reservation WHERE idReservation ='" + codeReservation + "'");
+			stmt.executeQuery("Select * from Reservation WHERE idReservation ='" + codeReservation + "'");
 			ResultSet rset = stmt.getResultSet();
-
-			codeReservationVisite = (int) rset.getObject(1);
 			
-			if(codeReservationVisite != 0) {
-				stmt.executeQuery("UPDATE Reservation SET )
+			while(rset.next()) {
+				idClient = (Integer.parseInt(rset.getString("idClient")));
+			}
+			
+			System.out.println(idClient);
+			
+			if(idClient != 0) {
+				stmt.executeUpdate("DELETE FROM Reservation WHERE idClient ='"+ idClient +"'" );
 				message = "Vous avez annulé votre visite";
+			}
+			
+			else {
+				message = "Vous n'avez pas reservé de visite";
 			}
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		
-		
+		}		
 		
 		return message;
-	}*/
+	}
 }
 	
