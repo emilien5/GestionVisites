@@ -3,6 +3,8 @@ package jee;
 public class ReservationVisite {
 	
 	private int idReservation;
+	private int idVisite;
+	private int idClient;
 	private int nombrePlace;
 	private boolean paiementEffectue;
 	
@@ -12,6 +14,21 @@ public class ReservationVisite {
 	public void setIdReservation(int idReservation) {
 		this.idReservation = idReservation;
 	}
+	
+	public int getIdVisite() {
+		return idVisite;
+	}
+	public void setIdVisite(int idVisite) {
+		this.idVisite = idVisite;
+	}
+	
+	public int getIdClient() {
+		return idClient;
+	}
+	public void setIdClient(int idClient) {
+		this.idClient = idClient;
+	}
+	
 	public int getNombrePlace() {
 		return nombrePlace;
 	}

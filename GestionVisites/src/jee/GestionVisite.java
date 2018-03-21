@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class GestionVisite {
 	
-	public static ArrayList<Visite> trouverVisite(Visite uneVisite){
+	public ArrayList<Visite> trouverVisite(Visite uneVisite){
 		
 		ArrayList<Visite> listeVisite = new ArrayList<Visite>();
 		ArrayList<Visite> listeVisiteParCategorie = new ArrayList<Visite>();
@@ -42,7 +42,6 @@ public class GestionVisite {
 			}
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println(listeVisiteParCategorie);
@@ -52,28 +51,83 @@ public class GestionVisite {
 	
 	public int reserverVisite(ReservationVisite uneReservation)
 	{
-		//faire un insert avec idVisite choisi, idClient, nombreplaces
-		int nbPlace = uneReservation.getNombrePlace();
+		int codeReservation = -1;
 		
+		try
+		{
+			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+			Connection db = DriverManager.getConnection("jdbc:mysql://localhost/gestionvisites?user=root&password=");
+			Statement stmt = db.createStatement();
+			
+			stmt.executeUpdate("INSERT INTO reservation(idVisite, idClient, nombreplaces, booleanPaiementEffectue) "
+					+ "VALUES( '" + uneReservation.getIdVisite() + "', '" + uneReservation.getIdClient() +
+					"', '" + uneReservation.getNombrePlace() + "', 0)");
+			
+			stmt.executeQuery("SELECT MAX(idReservation) FROM reservation");
+			ResultSet rset = stmt.getResultSet();
+			
+			while(rset.next())
+			{
+				codeReservation = rset.getInt(1);
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 		
-		
-		return 0;
+		return codeReservation;
 	}
 	
 	public String payerVisite(int codeReservation)
 	{
-		//changer la champ paiement effectue de codeReservation
-		return "";
+		String message = "Le paiement de votre visite n'a pas pu être effectué !";
+		
+		try
+		{
+			int booleen = -1;
+			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+			Connection db = DriverManager.getConnection("jdbc:mysql://localhost/gestionvisites?user=root&password=");
+			Statement stmt = db.createStatement();
+			
+			stmt.executeQuery("SELECT booleanPaiementEffectue FROM reservation "
+					+ "WHERE idReservation = '" + codeReservation + "'");
+			ResultSet rset = stmt.getResultSet();
+			
+			while(rset.next())
+			{
+				booleen = rset.getInt(1);
+			}
+			rset.close();
+			if(booleen == 1)
+			{
+				message = "Le paiement a déjà été effectué !";
+			}
+			else if(booleen == 0)
+			{
+				stmt.executeUpdate("UPDATE reservation SET booleanPaiementEffectue = '1'"
+						+ "WHERE idReservation ='" + codeReservation + "'");
+				message = "Le paiement de votre visite a été correctement effectué !";
+			}
+			return message;
+			
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return message;
+		}
 	}
 	
+	/*
 	public static void main(String[] arg0) {
 		Visite visite = new Visite();
 		visite.setVille("Toulouse");
 		trouverVisite(visite);
 		annulerVisite(103);
-	}
+	}*/
 	
-	public static boolean annulerVisite(int codeReservation) {
+	public boolean annulerVisite(int codeReservation) {
 		
 		int idClient = 0;
 		boolean visiteAnnulee = false;
@@ -97,7 +151,6 @@ public class GestionVisite {
 			}
 						
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 		
