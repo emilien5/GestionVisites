@@ -57,10 +57,10 @@ public class GestionVisite {
 		annulerVisite(103);
 	}
 	
-	public static String annulerVisite(int codeReservation) {
+	public static boolean annulerVisite(int codeReservation) {
 		
 		int idClient = 0;
-		String message = "";
+		boolean visiteAnnulee = false;
 		
 		try {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
@@ -77,19 +77,15 @@ public class GestionVisite {
 			
 			if(idClient != 0) {
 				stmt.executeUpdate("DELETE FROM Reservation WHERE idClient ='"+ idClient +"'" );
-				message = "Vous avez annulé votre visite";
+				visiteAnnulee = true;
 			}
-			
-			else {
-				message = "Vous n'avez pas reservé de visite";
-			}
-			
+						
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 		
-		return message;
+		return visiteAnnulee;
 	}
 }
 	
