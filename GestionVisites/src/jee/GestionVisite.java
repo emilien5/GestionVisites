@@ -50,6 +50,22 @@ public class GestionVisite {
 				
 	}
 	
+	public int reserverVisite(ReservationVisite uneReservation)
+	{
+		//faire un insert avec idVisite choisi, idClient, nombreplaces
+		int nbPlace = uneReservation.getNombrePlace();
+		
+		
+		
+		return 0;
+	}
+	
+	public String payerVisite(int codeReservation)
+	{
+		//changer la champ paiement effectue de codeReservation
+		return "";
+	}
+	
 	public static void main(String[] arg0) {
 		Visite visite = new Visite();
 		visite.setVille("Toulouse");
