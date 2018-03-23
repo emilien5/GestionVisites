@@ -13,32 +13,34 @@ public class GestionVisite {
 		
 		ArrayList<Visite> listeVisite = new ArrayList<Visite>();
 		ArrayList<Visite> listeVisiteParCategorie = new ArrayList<Visite>();
-		
+	
 		try {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			Connection db = DriverManager.getConnection("jdbc:mysql://localhost/GestionVisite?user=admin&password=network");
+			Connection db = DriverManager.getConnection("jdbc:mysql://localhost/GestionVisite?user=root&password=");
 			Statement stmt = db.createStatement();
 			stmt.executeQuery("Select * from Visite");
 			ResultSet rset = stmt.getResultSet();
 			
-			
+			// Creer une liste comportant toutes les visites de la base de données
 			while(rset.next()) {
 				Visite visite = new Visite();
 				visite.setDateVisite((rset.getString("dateVisite")).toString());
 				visite.setIdVisite(Integer.parseInt(rset.getString("idVisite")));
-				visite.setPrixVisite(Integer.parseInt(rset.getString("prixVisite")));
+				visite.setPrixVisite(rset.getString("prixVisite"));
 				visite.setTypeVisite((rset.getString("typeVisite")).toString());
 				visite.setVille((rset.getString("ville")).toString());
 				System.out.println(rset.getString("ville"));
 				listeVisite.add(visite);
 			}
 			
+
 			for(int i=0; i<listeVisite.size(); i++) {
 				if(listeVisite.get(i).getTypeVisite().equals(uneVisite.getTypeVisite()) ||
 						listeVisite.get(i).getDateVisite().equals(uneVisite.getDateVisite()) ||
-						listeVisite.get(i).getVille().equals(uneVisite.getVille())) {
+					listeVisite.get(i).getVille().equals(uneVisite.getVille())) {
 					listeVisiteParCategorie.add(listeVisite.get(i));
 				}
+
 			}
 			
 		} catch (SQLException e) {
@@ -134,7 +136,7 @@ public class GestionVisite {
 		
 		try {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			Connection db = DriverManager.getConnection("jdbc:mysql://localhost/GestionVisite?user=admin&password=network");
+			Connection db = DriverManager.getConnection("jdbc:mysql://localhost/GestionVisite?user=root&password=");
 			Statement stmt = db.createStatement();
 			stmt.executeQuery("Select * from Reservation WHERE idReservation ='" + codeReservation + "'");
 			ResultSet rset = stmt.getResultSet();
