@@ -6,7 +6,7 @@ public class Visite {
 	private String typeVisite;
 	private String ville;
 	private String dateVisite;
-	private String prixVisite;
+	private int prixVisite;
 	
 //	public Visite(int idVisites, String typeVisites, String villes, String prixVisites) {
 //		setIdVisite(idVisites);
@@ -98,10 +98,10 @@ public class Visite {
 	public void setDateVisite(String dateVisite) {
 		this.dateVisite = dateVisite;
 	}
-	public String getPrixVisite() {
+	public int getPrixVisite() {
 		return prixVisite;
 	}
-	public void setPrixVisite(String prixVisite) {
+	public void setPrixVisite(int prixVisite) {
 		this.prixVisite = prixVisite;
 	}
 	

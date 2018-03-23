@@ -26,7 +26,7 @@ public class GestionVisite {
 				Visite visite = new Visite();
 				visite.setDateVisite((rset.getString("dateVisite")).toString());
 				visite.setIdVisite(Integer.parseInt(rset.getString("idVisite")));
-				visite.setPrixVisite(rset.getString("prixVisite"));
+				visite.setPrixVisite(Integer.parseInt(rset.getString("prixVisite")));
 				visite.setTypeVisite((rset.getString("typeVisite")).toString());
 				visite.setVille((rset.getString("ville")).toString());
 				System.out.println(rset.getString("ville"));
