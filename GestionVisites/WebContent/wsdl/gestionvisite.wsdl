@@ -37,7 +37,7 @@
     <wsdl:part name="parameters" element="tns:trouverVisite">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:portType name="GestionVisitesSEI">
+  <wsdl:portType name="GestionVisiteSEI">
     <wsdl:operation name="annulerVisite">
       <wsdl:input name="annulerVisite" message="tns:annulerVisite">
     </wsdl:input>
@@ -63,7 +63,7 @@
     </wsdl:output>
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="GestionVisiteServiceSoapBinding" type="tns:GestionVisitesSEI">
+  <wsdl:binding name="GestionVisiteServiceSoapBinding" type="tns:GestionVisiteSEI">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="annulerVisite">
       <soap:operation soapAction="" style="document"/>

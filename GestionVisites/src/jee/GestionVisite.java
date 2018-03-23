@@ -9,19 +9,38 @@ import java.util.ArrayList;
 
 import javax.jws.WebService;
 
-@WebService(targetNamespace = "http://jee/", endpointInterface = "jee.GestionVisitesSEI", portName = "GestionVisitePort", serviceName = "GestionVisiteService")
-public class GestionVisite implements GestionVisitesSEI {
+
+
+@WebService(targetNamespace = "http://jee/", endpointInterface = "jee.GestionVisiteSEI", portName = "GestionVisitePort", serviceName = "GestionVisiteService")
+public class GestionVisite implements GestionVisiteSEI  {
 	
 	public ArrayList<Visite> trouverVisite(Visite uneVisite){
 		
 		ArrayList<Visite> listeVisite = new ArrayList<Visite>();
-		ArrayList<Visite> listeVisiteParCategorie = new ArrayList<Visite>();
 	
 		try {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 			Connection db = DriverManager.getConnection("jdbc:mysql://localhost/gestionvisites?user=root&password=");
 			Statement stmt = db.createStatement();
-			stmt.executeQuery("Select * from Visite");
+			
+			String CdtDateVisite = "dateVisite='"+uneVisite.getDateVisite();
+			String CdtTypeVisite = "typeVisite='"+uneVisite.getTypeVisite();
+			String CdtPrixVisite = "prixVisite=";
+			String CdtVille = "ville='"+uneVisite.getVille();
+			
+			if(uneVisite.getDateVisite()=="none") {
+				CdtDateVisite = "";
+			}
+			if(uneVisite.getTypeVisite()=="none") {	
+				CdtTypeVisite = "";
+			}
+			if(uneVisite.getPrixVisite()==0) {	
+				CdtPrixVisite = "";
+			}
+			if(uneVisite.getVille()=="none") {	
+				CdtVille = "";
+			}			
+			stmt.executeQuery("Select * from Visite WHERE "+CdtTypeVisite+"' AND "+CdtVille+"' AND "+CdtDateVisite+"' AND "+CdtPrixVisite);
 			ResultSet rset = stmt.getResultSet();
 			
 			// Creer une liste comportant toutes les visites de la base de données
@@ -32,25 +51,13 @@ public class GestionVisite implements GestionVisitesSEI {
 				visite.setPrixVisite(Integer.parseInt(rset.getString("prixVisite")));
 				visite.setTypeVisite((rset.getString("typeVisite")).toString());
 				visite.setVille((rset.getString("ville")).toString());
-				System.out.println(rset.getString("ville"));
 				listeVisite.add(visite);
-			}
-			
-
-			for(int i=0; i<listeVisite.size(); i++) {
-				if(listeVisite.get(i).getTypeVisite().equals(uneVisite.getTypeVisite()) ||
-						listeVisite.get(i).getDateVisite().equals(uneVisite.getDateVisite()) ||
-					listeVisite.get(i).getVille().equals(uneVisite.getVille())) {
-					listeVisiteParCategorie.add(listeVisite.get(i));
-				}
-
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println(listeVisiteParCategorie);
-		return listeVisiteParCategorie;
+		return listeVisite;
 				
 	}
 	
@@ -74,6 +81,7 @@ public class GestionVisite implements GestionVisitesSEI {
 			while(rset.next())
 			{
 				codeReservation = rset.getInt(1);
+				System.out.println(codeReservation);
 			}
 		}
 		catch (Exception e)
@@ -142,7 +150,6 @@ public class GestionVisite implements GestionVisitesSEI {
 				idClient = (Integer.parseInt(rset.getString("idClient")));
 			}
 			
-			System.out.println(idClient);
 			
 			if(idClient != 0) {
 				stmt.executeUpdate("DELETE FROM Reservation WHERE idClient ='"+ idClient +"'" );

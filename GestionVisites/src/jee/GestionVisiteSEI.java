@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import javax.jws.WebService;
 
-@WebService(name = "GestionVisitesSEI", targetNamespace = "http://jee/")
-public interface GestionVisitesSEI {
+@WebService(name = "GestionVisiteSEI", targetNamespace = "http://jee/")
+public interface GestionVisiteSEI {
 
 	ArrayList<Visite> trouverVisite(Visite uneVisite);
 
