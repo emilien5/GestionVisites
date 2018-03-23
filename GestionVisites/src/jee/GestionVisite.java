@@ -7,7 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class GestionVisite {
+import javax.jws.WebService;
+
+@WebService(targetNamespace = "http://jee/", endpointInterface = "jee.GestionVisitesSEI", portName = "GestionVisitePort", serviceName = "GestionVisiteService")
+public class GestionVisite implements GestionVisitesSEI {
 	
 	public ArrayList<Visite> trouverVisite(Visite uneVisite){
 		
@@ -16,7 +19,7 @@ public class GestionVisite {
 	
 		try {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			Connection db = DriverManager.getConnection("jdbc:mysql://localhost/GestionVisite?user=root&password=");
+			Connection db = DriverManager.getConnection("jdbc:mysql://localhost/gestionvisites?user=root&password=");
 			Statement stmt = db.createStatement();
 			stmt.executeQuery("Select * from Visite");
 			ResultSet rset = stmt.getResultSet();
@@ -121,13 +124,7 @@ public class GestionVisite {
 		}
 	}
 	
-	/*
-	public static void main(String[] arg0) {
-		Visite visite = new Visite();
-		visite.setVille("Toulouse");
-		trouverVisite(visite);
-		annulerVisite(103);
-	}*/
+
 	
 	public boolean annulerVisite(int codeReservation) {
 		
@@ -136,7 +133,7 @@ public class GestionVisite {
 		
 		try {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			Connection db = DriverManager.getConnection("jdbc:mysql://localhost/GestionVisite?user=root&password=");
+			Connection db = DriverManager.getConnection("jdbc:mysql://localhost/gestionvisites?user=root&password=");
 			Statement stmt = db.createStatement();
 			stmt.executeQuery("Select * from Reservation WHERE idReservation ='" + codeReservation + "'");
 			ResultSet rset = stmt.getResultSet();
