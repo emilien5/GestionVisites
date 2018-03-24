@@ -20,30 +20,23 @@ public class GestionVisite implements GestionVisiteSEI  {
 	
 		try {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			Connection db = DriverManager.getConnection("jdbc:mysql://localhost/gestionvisites?user=root&password=");
+			Connection db = DriverManager.getConnection("jdbc:mysql://localhost:8889/gestionvisites?user=root&password=root");
 			Statement stmt = db.createStatement();
 			
-			String CdtDateVisite = "dateVisite='"+uneVisite.getDateVisite();
-			String CdtTypeVisite = "typeVisite='"+uneVisite.getTypeVisite();
-			String CdtPrixVisite = "prixVisite=";
-			String CdtVille = "ville='"+uneVisite.getVille();
+			String cdtTypeVisite =  uneVisite.getTypeVisite();
+			String cdtVille = uneVisite.getVille();
+			String cdtDateVisite = uneVisite.getDateVisite();
+			String cdtPrixVisite = String.valueOf(uneVisite.getPrixVisite());
 			
-			if(uneVisite.getDateVisite()=="none") {
-				CdtDateVisite = "";
-			}
-			if(uneVisite.getTypeVisite()=="none") {	
-				CdtTypeVisite = "";
-			}
-			if(uneVisite.getPrixVisite()==0) {	
-				CdtPrixVisite = "";
-			}
-			if(uneVisite.getVille()=="none") {	
-				CdtVille = "";
-			}			
-			stmt.executeQuery("Select * from Visite WHERE "+CdtTypeVisite+"' AND "+CdtVille+"' AND "+CdtDateVisite+"' AND "+CdtPrixVisite);
-			ResultSet rset = stmt.getResultSet();
+			String requete = "SELECT * FROM Visite";
+			int nombreDeAnd = 0;
 			
-			// Creer une liste comportant toutes les visites de la base de données
+			requete = miseAJourRequete(uneVisite, requete, nombreDeAnd, cdtTypeVisite, cdtVille, cdtDateVisite, cdtPrixVisite);
+			System.out.println(requete);
+			stmt.executeQuery(requete);
+			ResultSet rset = stmt.getResultSet();			
+			
+			// Creer une liste comportant toutes les visites de la base de donnï¿½es
 			while(rset.next()) {
 				Visite visite = new Visite();
 				visite.setDateVisite((rset.getString("dateVisite")).toString());
@@ -94,7 +87,7 @@ public class GestionVisite implements GestionVisiteSEI  {
 	
 	public String payerVisite(int codeReservation)
 	{
-		String message = "Le paiement de votre visite n'a pas pu être effectué !";
+		String message = "Le paiement de votre visite n'a pas pu ï¿½tre effectuï¿½ !";
 		
 		try
 		{
@@ -114,13 +107,13 @@ public class GestionVisite implements GestionVisiteSEI  {
 			rset.close();
 			if(booleen == 1)
 			{
-				message = "Le paiement a déjà été effectué !";
+				message = "Le paiement a dï¿½jï¿½ ï¿½tï¿½ effectuï¿½ !";
 			}
 			else if(booleen == 0)
 			{
 				stmt.executeUpdate("UPDATE reservation SET booleanPaiementEffectue = '1'"
 						+ "WHERE idReservation ='" + codeReservation + "'");
-				message = "Le paiement de votre visite a été correctement effectué !";
+				message = "Le paiement de votre visite a ï¿½tï¿½ correctement effectuï¿½ !";
 			}
 			return message;
 			
@@ -161,6 +154,62 @@ public class GestionVisite implements GestionVisiteSEI  {
 		}		
 		
 		return visiteAnnulee;
+	}
+	
+	public String miseAJourRequete(Visite uneVisite, String requete, int nombreDeAnd, String cdtTypeVisite, String cdtVille, String cdtDateVisite, String cdtPrixVisite) {
+		
+		if(!uneVisite.getDateVisite().equals("none") || !uneVisite.getTypeVisite().equals("none") || uneVisite.getPrixVisite() != 0 || !uneVisite.getVille().equals("none")) {
+			requete = requete + " WHERE";
+		}
+		
+		// Type des visites //
+		if(uneVisite.getTypeVisite().equals("none")) {	
+			cdtTypeVisite = "";
+		} else {
+			requete = requete + " typeVisite = '"+ cdtTypeVisite +"'";
+			nombreDeAnd = 1;
+		}
+		
+		//  Ville des visites //
+		if(uneVisite.getVille().equals("none")) {	
+			cdtVille = "";
+		} else {
+			if(nombreDeAnd == 1) {
+				requete = requete + " and ville = '"+ cdtVille +"'";
+				nombreDeAnd = 1;
+			} else {
+				requete = requete + " ville = '"+ cdtVille +"'";
+				nombreDeAnd = 1;
+			}
+		}
+		
+		//  Date des visites //
+		if(uneVisite.getDateVisite().equals("none")) {
+			cdtDateVisite = "";
+		} else {
+			if(nombreDeAnd == 1 || nombreDeAnd == 2) {
+				requete = requete + " and dateVisite = '"+ cdtDateVisite +"'";
+				nombreDeAnd = 1;
+			} else {
+				requete = requete + " dateVisite = '"+ cdtDateVisite +"'";
+				nombreDeAnd = 1;
+			}
+		}
+		
+		// Prix des visites //
+		if(uneVisite.getPrixVisite() == 0) {	
+			cdtPrixVisite = "";
+			nombreDeAnd = 0;
+		} else {
+			if(nombreDeAnd == 1 || nombreDeAnd == 2 || nombreDeAnd == 3) {
+				requete = requete + "and prixVisite = '"+ cdtPrixVisite +"'";
+				nombreDeAnd = 0;
+			} else {
+				requete = requete + " prixVisite = '"+ cdtPrixVisite +"'";
+				nombreDeAnd = 0;
+			}
+		}
+		return requete;
 	}
 }
 	
