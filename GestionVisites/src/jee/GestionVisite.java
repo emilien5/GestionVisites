@@ -20,7 +20,7 @@ public class GestionVisite implements GestionVisiteSEI  {
 	
 		try {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			Connection db = DriverManager.getConnection("jdbc:mysql://localhost:8889/gestionvisites?user=root&password=root");
+			Connection db = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestionvisites?user=root&password=");
 			Statement stmt = db.createStatement();
 			
 			String cdtTypeVisite =  uneVisite.getTypeVisite();
@@ -36,7 +36,7 @@ public class GestionVisite implements GestionVisiteSEI  {
 			stmt.executeQuery(requete);
 			ResultSet rset = stmt.getResultSet();			
 			
-			// Creer une liste comportant toutes les visites de la base de donn�es
+			// Creer une liste comportant toutes les visites de la base de donnees
 			while(rset.next()) {
 				Visite visite = new Visite();
 				visite.setDateVisite((rset.getString("dateVisite")).toString());
@@ -61,7 +61,7 @@ public class GestionVisite implements GestionVisiteSEI  {
 		try
 		{
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			Connection db = DriverManager.getConnection("jdbc:mysql://localhost/gestionvisites?user=root&password=");
+			Connection db = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestionvisites?user=root&password=");
 			Statement stmt = db.createStatement();
 			
 			stmt.executeUpdate("INSERT INTO reservation(idVisite, idClient, nombreplaces, booleanPaiementEffectue) "
@@ -87,13 +87,13 @@ public class GestionVisite implements GestionVisiteSEI  {
 	
 	public String payerVisite(int codeReservation)
 	{
-		String message = "Le paiement de votre visite n'a pas pu �tre effectu� !";
+		String message = "Le paiement de votre visite n'a pas pu etre effectue !";
 		
 		try
 		{
 			int booleen = -1;
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			Connection db = DriverManager.getConnection("jdbc:mysql://localhost/gestionvisites?user=root&password=");
+			Connection db = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestionvisites?user=root&password=");
 			Statement stmt = db.createStatement();
 			
 			stmt.executeQuery("SELECT booleanPaiementEffectue FROM reservation "
@@ -107,13 +107,13 @@ public class GestionVisite implements GestionVisiteSEI  {
 			rset.close();
 			if(booleen == 1)
 			{
-				message = "Le paiement a d�j� �t� effectu� !";
+				message = "Le paiement a deja ete effectu� !";
 			}
 			else if(booleen == 0)
 			{
 				stmt.executeUpdate("UPDATE reservation SET booleanPaiementEffectue = '1'"
 						+ "WHERE idReservation ='" + codeReservation + "'");
-				message = "Le paiement de votre visite a �t� correctement effectu� !";
+				message = "Le paiement de votre visite a ete correctement effectue !";
 			}
 			return message;
 			
@@ -134,7 +134,7 @@ public class GestionVisite implements GestionVisiteSEI  {
 		
 		try {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			Connection db = DriverManager.getConnection("jdbc:mysql://localhost/gestionvisites?user=root&password=");
+			Connection db = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestionvisites?user=root&password=");
 			Statement stmt = db.createStatement();
 			stmt.executeQuery("Select * from Reservation WHERE idReservation ='" + codeReservation + "'");
 			ResultSet rset = stmt.getResultSet();
