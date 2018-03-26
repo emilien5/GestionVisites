@@ -202,10 +202,10 @@ public class GestionVisite implements GestionVisiteSEI  {
 			nombreDeAnd = 0;
 		} else {
 			if(nombreDeAnd == 1 || nombreDeAnd == 2 || nombreDeAnd == 3) {
-				requete = requete + "and prixVisite = '"+ cdtPrixVisite +"'";
+				requete = requete + " and prixVisite = "+ cdtPrixVisite +"";
 				nombreDeAnd = 0;
 			} else {
-				requete = requete + " prixVisite = '"+ cdtPrixVisite +"'";
+				requete = requete + " prixVisite = "+ cdtPrixVisite +"";
 				nombreDeAnd = 0;
 			}
 		}
