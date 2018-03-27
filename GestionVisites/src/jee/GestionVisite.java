@@ -188,10 +188,10 @@ public class GestionVisite implements GestionVisiteSEI  {
 			cdtDateVisite = "";
 		} else {
 			if(nombreDeAnd == 1 || nombreDeAnd == 2) {
-				requete = requete + " and dateVisite = '"+ cdtDateVisite +"'";
+				requete = requete + " and dateVisite >= '"+ cdtDateVisite +"'";
 				nombreDeAnd = 1;
 			} else {
-				requete = requete + " dateVisite = '"+ cdtDateVisite +"'";
+				requete = requete + " dateVisite >= '"+ cdtDateVisite +"'";
 				nombreDeAnd = 1;
 			}
 		}
