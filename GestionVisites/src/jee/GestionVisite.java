@@ -32,7 +32,6 @@ public class GestionVisite implements GestionVisiteSEI  {
 			int nombreDeAnd = 0;
 			
 			requete = miseAJourRequete(uneVisite, requete, nombreDeAnd, cdtTypeVisite, cdtVille, cdtDateVisite, cdtPrixVisite);
-			System.out.println(requete);
 			stmt.executeQuery(requete);
 			ResultSet rset = stmt.getResultSet();			
 			
@@ -74,7 +73,6 @@ public class GestionVisite implements GestionVisiteSEI  {
 			while(rset.next())
 			{
 				codeReservation = rset.getInt(1);
-				System.out.println(codeReservation);
 			}
 		}
 		catch (Exception e)
