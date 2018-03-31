@@ -105,7 +105,7 @@ public class GestionVisite implements GestionVisiteSEI  {
 			rset.close();
 			if(booleen == 1)
 			{
-				message = "Le paiement a deja ete effectuï¿½ !";
+				message = "Le paiement a deja ete effectué !";
 			}
 			else if(booleen == 0)
 			{
